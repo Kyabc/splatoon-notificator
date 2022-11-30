@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "splatoon-notificator"
+version = "0.1.0"
+description = "LINE chat bot to notify updates Splatoon3 schedules"
+authors = ["Kyabc <0707.teriyaki@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [
+    { include = "splatoon" },
+    { include = "line" },
+    ]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+line-bot-sdk = "^2.3.0"
+python-dotenv = "^0.21.0"
+pydantic = "^1.10.2"
+pytest = "^7.2.0"
+schedule = "^1.1.0"
+
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^6.0.0"
+black = "^22.10.0"
+isort = "^5.10.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
