@@ -1,9 +1,11 @@
+from time import sleep
+
+import schedule
 from linebot import LineBotApi
 from linebot.models import TextSendMessage
 
 from line.config import settings
 from line.message.messages import get_message
-import schedule
 
 RULES = [
     "regular",
@@ -27,9 +29,13 @@ class LineBot:
         self.line_bot_api.broadcast(messages=messages)
 
     def run(self):
-        schedule.every().hour.at(":00").do(self.send())
+        schedule.every().hour.at(":00").do(self.send)
+        while True:
+            schedule.run_pending()
+            sleep(1)
+
 
 line_bot = LineBot()
 
 if __name__ == "__main__":
-    line_bot.run()
+    line_bot.send()
