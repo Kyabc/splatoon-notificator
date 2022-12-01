@@ -67,7 +67,7 @@ class LineBot:
         if texts:
             self.broadcast(INIT_MESSAGE)
             for text in texts:
-                self.broadcast(text)
+                self.broadcast(text.rstrip())
 
     def run(self):
         self.initialize()
