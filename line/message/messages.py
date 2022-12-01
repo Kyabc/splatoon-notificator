@@ -1,65 +1,77 @@
-from typing import List
+from typing import Union
 
-from line.message.template_messages import ERROR_MESSAGE, NO_MESSAGE
-from splatoon.splatoon import Splatoon
-
-RULE_NAMES = {
-    "regular": "レギュラーマッチ",
-    "bankara-challenge": "バンカラマッチ (チャレンジ)",
-    "bankara-open": "バンカラマッチ (オープン)",
-    "fest": "フェスマッチ",
-    "x": "Xマッチ",
-    "coop-grouping-regular": "サーモンラン",
-}
+from line.message.template_messages import (ERROR_MESSAGE, FESTIVAL_END,
+                                            FESTIVAL_START, NO_MESSAGE,
+                                            TRICOLOR_START, header,
+                                            mode_message, stages_message,
+                                            time_message, weapons_message)
+from splatoon.scheme import Battle, Festival, SalmonRun
 
 
-# TODO: update format of text
-
-
-def make_text(rule: str, stages: List[str]):
-    text_head = f"【{RULE_NAMES[rule]}ステージ】"
-    text_stages = "\n".join(f"・{stage}" for stage in stages)
-    return f"{text_head}\n{text_stages}"
-
-
-def get_message(rule: str, time: int = 0) -> str:
-    if rule == "fest":
-        return get_fes_message(time)
-    elif rule == "coop-grouping-regular":
-        return get_salmonrun_message(time)
+def get_message(
+    schedule: Union[Battle, Festival, SalmonRun],
+    rule: str,
+    fes_start: bool = False,
+    tricolor_start: bool = False,
+    fes_end: bool = False,
+) -> str:
+    if type(schedule) == Battle:
+        return get_battle_message(schedule, rule)
+    elif type(schedule) == Festival:
+        return get_fes_message(
+            schedule, rule, fes_start, tricolor_start, fes_end
+        )  # noqa
     else:
-        return get_battle_message(rule, time)
+        return get_salmonrun_message(schedule, rule)
 
 
-def get_battle_message(rule: str, time: int = 0) -> str:
-    """
-    message generator for regular, bankara, x
-    """
-    schedule = Splatoon.get_battle(rule, time)
+def get_battle_message(schedule: Battle, rule: str) -> str:
     if not schedule:
         return ERROR_MESSAGE
     if schedule.festival:
         return NO_MESSAGE
-    return make_text(rule, [st.name for st in schedule.stages])
+    text = (
+        header(rule)
+        + time_message(schedule.start, schedule.end)
+        + mode_message(schedule.mode)
+        + stages_message(schedule.stages)
+    )
+    return text
 
 
-def get_fes_message(time: int = 0) -> str:
-    schedule = Splatoon.get_festival(time)
+def get_fes_message(
+    schedule: Festival, rule: str, fes_start: bool, tricolor_start: bool, fes_end: bool
+) -> str:
     if not schedule:
         return ERROR_MESSAGE
     if not schedule.festival:
         return NO_MESSAGE
     # before tricolor
-    text = make_text(RULE_NAMES["fest"], [st.name for st in schedule.stages])
+    text = (
+        header(rule)
+        + time_message(schedule.start, schedule.end)
+        + mode_message(schedule.mode)
+        + stages_message(schedule.stages)
+    )
     if schedule.tricolor:
-        text += f"【トリカラバトル】\n{schedule.tricolor_stage.name}"
+        text += header("tricolor") + stages_message([schedule.tricolor_stage])
+        if tricolor_start:
+            text = TRICOLOR_START + text
+    if fes_start:
+        text = FESTIVAL_START + text
+    if fes_end:
+        text = FESTIVAL_END + text
     return text
 
 
-def get_salmonrun_message(time: int = 0) -> int:
-    schedule = Splatoon.get_salmonrun(time)
+def get_salmonrun_message(schedule: SalmonRun, rule: str) -> int:
+    # TODO: クマさん武器に対応
     if not schedule:
         return ERROR_MESSAGE
-    weapons_str = "\n".join(f"・{w.name}" for w in schedule.weapons)
-    text = f"【サーモンラン】\n{schedule.stage.name}\n{weapons_str}"
+    text = (
+        header(rule)
+        + time_message(schedule.start, schedule.end)
+        + stages_message([schedule.stage])
+        + weapons_message(schedule.weapons)
+    )
     return text
