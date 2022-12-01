@@ -56,6 +56,7 @@ class LineBot:
                     message = get_message(schedule, rule)
                 if message:
                     update_messages.append(message)
+                self.start[rule] = schedule.start
         return update_messages
 
     def broadcast(self, text: str) -> None:
