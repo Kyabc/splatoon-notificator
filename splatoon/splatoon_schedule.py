@@ -1,20 +1,8 @@
 from datetime import datetime
 from typing import Union
-import requests
 
 from splatoon.api import get_schedule
-
-from splatoon.scheme import (
-    Battle,
-    Regular,
-    BankaraChallenge,
-    BankaraOpen,
-    XMatch,
-    Festival,
-    SalmonRun,
-    Stage,
-    Weapon,
-)
+from splatoon.scheme import Battle, Festival, SalmonRun, Stage, Weapon
 
 
 def str2datetime(time: str) -> datetime:
@@ -83,7 +71,7 @@ class Splatoon:
             ],
         )
         return result
-    
+
     def get(self, rule: str, time: int = 0) -> Union[Battle, Festival, SalmonRun]:
         if rule == "fest":
             return self.get_festival(time)

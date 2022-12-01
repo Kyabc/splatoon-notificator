@@ -1,6 +1,8 @@
-from config import settings
-from typing import Optional, Dict, Any
+from typing import Any, Dict, Optional
+
 import requests
+
+from config import settings
 
 HEADER = {"User-Agent": settings.USER_AGENT}
 

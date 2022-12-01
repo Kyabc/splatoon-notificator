@@ -37,8 +37,3 @@ class SalmonRun(BaseModel):
     end: datetime
     stage: Stage
     weapons: List[Weapon]
-
-
-Regular = Battle
-BankaraChallenge = Battle
-BankaraOpen = Battle
