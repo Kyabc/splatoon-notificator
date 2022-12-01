@@ -2,7 +2,7 @@
 name = "splatoon-notificator"
 version = "0.1.0"
 description = "LINE chat bot to notify updates Splatoon3 schedules"
-authors = ["Kyabc <0707.teriyaki@gmail.com>"]
+authors = ["keiya-sato <sato-keiya@ed.tmu.ac.jp>"]
 license = "MIT"
 readme = "README.md"
 packages = [
