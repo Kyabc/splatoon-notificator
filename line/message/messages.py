@@ -1,10 +1,17 @@
 from typing import Union
 
-from line.message.template_messages import (ERROR_MESSAGE, FESTIVAL_END,
-                                            FESTIVAL_START, NO_MESSAGE,
-                                            TRICOLOR_START, header,
-                                            mode_message, stages_message,
-                                            time_message, weapons_message)
+from line.message.template_messages import (
+    ERROR_MESSAGE,
+    FESTIVAL_END,
+    FESTIVAL_START,
+    NO_MESSAGE,
+    TRICOLOR_START,
+    header,
+    mode_message,
+    stages_message,
+    time_message,
+    weapons_message,
+)
 from splatoon.scheme import Battle, Festival, SalmonRun
 
 
