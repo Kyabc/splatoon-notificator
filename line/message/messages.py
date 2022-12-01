@@ -1,7 +1,7 @@
 from typing import List
 
 from line.message.template_messages import ERROR_MESSAGE, NO_MESSAGE
-from splatoon.scheduler import SplatoonScheduler
+from splatoon.splatoon import Splatoon
 
 RULE_NAMES = {
     "regular": "レギュラーマッチ",
@@ -35,7 +35,7 @@ def get_battle_message(rule: str, time: int = 0) -> str:
     """
     message generator for regular, bankara, x
     """
-    schedule = SplatoonScheduler.get_battle(rule, time)
+    schedule = Splatoon.get_battle(rule, time)
     if not schedule:
         return ERROR_MESSAGE
     if schedule.festival:
@@ -44,7 +44,7 @@ def get_battle_message(rule: str, time: int = 0) -> str:
 
 
 def get_fes_message(time: int = 0) -> str:
-    schedule = SplatoonScheduler.get_festival(time)
+    schedule = Splatoon.get_festival(time)
     if not schedule:
         return ERROR_MESSAGE
     if not schedule.festival:
@@ -57,7 +57,7 @@ def get_fes_message(time: int = 0) -> str:
 
 
 def get_salmonrun_message(time: int = 0) -> int:
-    schedule = SplatoonScheduler.get_salmonrun(time)
+    schedule = Splatoon.get_salmonrun(time)
     if not schedule:
         return ERROR_MESSAGE
     weapons_str = "\n".join(f"・{w.name}" for w in schedule.weapons)
