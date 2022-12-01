@@ -18,12 +18,12 @@ class Splatoon:
         result = Battle(
             start=str2datetime(response["start_time"]),
             end=str2datetime(response["end_time"]),
-            rule=None,
+            mode=None,
             stages=None,
             festival=response["is_fest"],
         )
         if not result.festival:
-            result.rule = response["rule"]["name"]
+            result.mode = response["rule"]["name"]
             result.stages = [
                 Stage(name=t["name"], img_url=t["image"]) for t in response["stages"]
             ]
@@ -37,14 +37,14 @@ class Splatoon:
         result = Festival(
             start=str2datetime(response["start_time"]),
             end=str2datetime(response["end_time"]),
-            rule=None,
+            mode=None,
             stages=None,
             festival=response["is_fest"],
             tricolor=response["is_tricolor"],
             tricolor_stage=None,
         )
         if result.festival:
-            result.rule = response["rule"]["name"]
+            result.mode = response["rule"]["name"]
             result.stages = [
                 Stage(name=t["name"], img_url=t["image"]) for t in result["stagas"]
             ]

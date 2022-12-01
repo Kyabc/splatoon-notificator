@@ -17,7 +17,7 @@ class Weapon(BaseModel):
 class Battle(BaseModel):
     start: datetime
     end: datetime
-    rule: Optional[str]
+    mode: Optional[str]
     stages: Optional[List[Stage]]
     festival: bool
 
@@ -25,7 +25,7 @@ class Battle(BaseModel):
 class Festival(BaseModel):
     start: datetime
     end: datetime
-    rule: Optional[str]
+    mode: Optional[str]
     stages: Optional[List[Stage]]
     festival: bool
     tricolor: bool
