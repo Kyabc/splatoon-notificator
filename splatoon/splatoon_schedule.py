@@ -22,7 +22,7 @@ class Splatoon:
             stages=None,
             festival=response["is_fest"],
         )
-        if not result.festival:
+        if not result.festival and response["rule"] and response["stages"]:
             result.mode = response["rule"]["name"]
             result.stages = [
                 Stage(name=t["name"], img_url=t["image"]) for t in response["stages"]
