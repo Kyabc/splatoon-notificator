@@ -3,11 +3,14 @@ from typing import Any, Dict, Optional
 
 import requests
 
+from line.config import settings
 from splatoon.scheme import Battle, Festival, SalmonRun, Stage, Weapon
 
 MAX_REQUESTS = 3
 
 TIME = {0: "now", 1: "next", 2: "schedule"}
+
+HEADER = {"User-Agent": settings.USER_AGENT}
 
 
 def str2datetime(time: str) -> datetime:
@@ -21,7 +24,7 @@ def splatoon_api_url(rule, time: int = 0) -> str:
 def get(url: str) -> Optional[Dict[str, Any]]:
     response = None
     for _ in range(MAX_REQUESTS):
-        response = requests.get(url)
+        response = requests.get(url, headers=HEADER)
         if response.status_code == 200:
             break
     if response.status_code == 200:
