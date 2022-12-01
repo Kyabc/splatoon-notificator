@@ -6,12 +6,13 @@ HEADER = {"User-Agent": settings.USER_AGENT}
 
 TIME = {0: "now", 1: "next", 2: "schedule"}
 
-def api_url(rule: str, time: int = 0) -> str:
+
+def endpoint(rule: str, time: int = 0) -> str:
     return f"https://spla3.yuu26.com/api/{rule}/{TIME[time]}"
 
 
 def get_schedule(rule: str, time: int = 0) -> Optional[Dict[str, Any]]:
-    url = api_url(rule, time)
+    url = endpoint(rule, time)
     response = None
     for _ in range(settings.MAX_API_REQUESTS):
         response = requests.get(url, headers=HEADER)
@@ -21,6 +22,7 @@ def get_schedule(rule: str, time: int = 0) -> Optional[Dict[str, Any]]:
         return response.json()
     else:
         return None
+
 
 if __name__ == "__main__":
     schedule = get_schedule("regular")
