@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from time import sleep
 from typing import Dict, List
 
@@ -22,6 +22,11 @@ RULES = [
 ]
 
 
+def updates_expected() -> bool:
+    now = datetime.now(timezone.utc)
+    return now.hour % 2 == 0
+
+
 class LineBot:
     def __init__(self):
         self.line_bot_api = LineBotApi(settings.CHANNEL_ACCESS_TOKEN)
@@ -40,6 +45,8 @@ class LineBot:
 
     def detect_updates(self, time: int = 0) -> List[str]:
         update_messages: List[str] = []
+        if not updates_expected():
+            return update_messages
         for rule in RULES:
             schedule = splatoon_schedule.get(rule, time)
             if schedule and self.start[rule] < schedule.start:
