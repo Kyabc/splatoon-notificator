@@ -1,6 +1,7 @@
 from typing import Union
 
 from line.message.template_messages import (
+    INIT_MESSAGE,
     ERROR_MESSAGE,
     FESTIVAL_END,
     FESTIVAL_START,
@@ -14,6 +15,10 @@ from line.message.template_messages import (
 )
 from splatoon.scheme import Battle, Festival, SalmonRun
 
+def unify_messages(messages: List[str], init_message: bool = False) -> str:
+    if init_message:
+        messages.insert(0, INIT_MESSAGE)
+    return '\n'.join(messages)
 
 def get_message(
     schedule: Union[Battle, Festival, SalmonRun],

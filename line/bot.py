@@ -7,8 +7,7 @@ from linebot import LineBotApi
 from linebot.models import TextSendMessage
 
 from config import settings
-from line.message.messages import get_message
-from line.message.template_messages import INIT_MESSAGE
+from line.message.messages import get_message, unify_messages
 from splatoon.scheme import Festival
 from splatoon.splatoon_schedule import splatoon_schedule
 
@@ -43,7 +42,7 @@ class LineBot:
                     self.festival = schedule.festival
                     self.tricolor = schedule.tricolor
 
-    def detect_updates(self, time: int = 0) -> List[str]:
+    def get_update_messages(self, time: int = 0) -> List[str]:
         update_messages: List[str] = []
         if not updates_expected():
             return update_messages
@@ -62,7 +61,7 @@ class LineBot:
                 else:
                     message = get_message(schedule, rule)
                 if message:
-                    update_messages.append(message)
+                    update_messages.append(message.rstrip())
                 self.start[rule] = schedule.start
         return update_messages
 
@@ -71,11 +70,10 @@ class LineBot:
         self.line_bot_api.broadcast(messages=messages)
 
     def send_updates(self):
-        texts = self.detect_updates()
+        messages = self.get_update_messages()
         if texts:
-            self.broadcast(INIT_MESSAGE)
-            for text in texts:
-                self.broadcast(text.rstrip())
+            text = unify_messages(messages, init_message=True)
+            self.broadcast(text=text)
 
     def run(self):
         self.initialize()
