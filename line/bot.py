@@ -71,7 +71,7 @@ class LineBot:
 
     def send_updates(self):
         messages = self.get_update_messages()
-        if texts:
+        if messages:
             text = unify_messages(messages, init_message=True)
             self.broadcast(text=text)
 

@@ -1,24 +1,18 @@
-from typing import Union
+from typing import List, Union
 
-from line.message.template_messages import (
-    INIT_MESSAGE,
-    ERROR_MESSAGE,
-    FESTIVAL_END,
-    FESTIVAL_START,
-    NO_MESSAGE,
-    TRICOLOR_START,
-    header,
-    mode_message,
-    stages_message,
-    time_message,
-    weapons_message,
-)
+from line.message.template_messages import (ERROR_MESSAGE, FESTIVAL_END,
+                                            FESTIVAL_START, INIT_MESSAGE,
+                                            NO_MESSAGE, TRICOLOR_START, header,
+                                            mode_message, stages_message,
+                                            time_message, weapons_message)
 from splatoon.scheme import Battle, Festival, SalmonRun
+
 
 def unify_messages(messages: List[str], init_message: bool = False) -> str:
     if init_message:
         messages.insert(0, INIT_MESSAGE)
-    return '\n'.join(messages)
+    return "\n".join(messages)
+
 
 def get_message(
     schedule: Union[Battle, Festival, SalmonRun],
