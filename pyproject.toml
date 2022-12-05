@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "splatoon-notificator"
-version = "1.0.0"
+version = "1.0.1"
 description = "LINE chat bot to notify updates Splatoon3 schedules"
 authors = ["keiya-sato <sato-keiya@ed.tmu.ac.jp>"]
 license = "MIT"
